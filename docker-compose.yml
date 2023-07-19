@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+
+  db:
+    image: postgres:12.4
+    container_name: db
+    volumes:
+      - ./storage/postgres/data:/var/lib/postgresql/data/
+    env_file:
+      - .env
+    ports:
+      - ${POSTGRES_PORT}:5432
+    networks:
+      - moves_network
+
+  redis:
+    image: redis
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - ./storage/redis/data:/data
+    ports:
+      - ${REDIS_PORT}:6379
+    networks:
+      - moves_network
+
+  booking_app:
+    build: .
+    #    image: sova040888/booking_app:latest
+    container_name: auth_app
+    restart: always
+    volumes:
+      - static_value:/code/static/
+      - media_value:/code/media/
+    env_file:
+      - .env
+    command: gunicorn booking_app.wsgi_app:app --bind 0.0.0.0:8000 --reload
+    depends_on:
+      - db
+      - redis
+    networks:
+      - moves_network
+
+  nginx:
+    image: nginx:1.19.3
+    container_name: nginx_booking
+    ports:
+    - "80:80"
+
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
+      - static_value:/var/html/static/
+      - media_value:/var/html/media/
+
+    depends_on:
+      - booking_app
+      - db
+      - redis
+    networks:
+      - moves_network
+
+volumes:
+  static_value:
+  media_value:
+
+networks:
+  moves_network:
+    name: moves_network
+    external: true

@@ -1,0 +1,18 @@
+/.env
+.env
+.env_test
+# Venv
+venv
+.venv
+.python-version
+
+# Docker
+docker
+
+# Storage
+/storage/
+/.pytest_cache/
+
+/.idea/
+.idea/
+/auth_proxy_app/storage/

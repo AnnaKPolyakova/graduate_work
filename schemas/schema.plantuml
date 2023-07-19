@@ -1,0 +1,19 @@
+@startuml
+
+actor User #violet
+
+component AsyncAPI as [Async API \n(nginx)\n\n(save new notifications\nand settings for it)] #lightgreen
+component Auth_app as [Auth app \n(nginx)] #lightgreen
+component Booking_app as [Booking_app \n(nginx)] #lightgreen
+
+database "Postgres db \n \n(users, roles, npermissions)" as Auth_app_PostgresDB #orange
+database "Elasticsearch db \n \n(FilmWork,...)" as AsyncAPI_ElasticsearchDB #orange
+database "Postgres db" as Booking_app_PostgresDB #orange
+
+AsyncAPI -down-> AsyncAPI_ElasticsearchDB: get data
+AsyncAPI <- Booking_app: check that film exist
+User -down-> Booking_app: use api
+Booking_app <-down-> Booking_app_PostgresDB: crud data
+Booking_app <-> Auth_app: authentication
+Auth_app <-down-> Auth_app_PostgresDB: crud data
+@enduml

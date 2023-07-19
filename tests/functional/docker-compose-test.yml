@@ -1,0 +1,44 @@
+version: '3.0'
+
+services:
+  db:
+    image: postgres:12.4
+    container_name: db
+    volumes:
+      - ./storage/postgres/data:/var/lib/postgresql/data/
+    env_file:
+      - ../../.env
+    ports:
+      - ${POSTGRES_PORT}:5432
+    networks:
+      - moves_network
+
+  redis:
+    image: redis
+    restart: always
+    env_file:
+      - ../../.env
+    volumes:
+      - ./storage/redis/data:/data
+    ports:
+      - ${REDIS_PORT}:6379
+    networks:
+      - moves_network
+
+  tests:
+    build:
+      context: ../../
+    entrypoint: >
+      sh -c "pytest tests/functional/src -s -vvv --disable-warnings"
+
+    command: run test pytest
+    networks:
+      - moves_network
+    depends_on:
+      - db
+      - redis
+
+networks:
+  moves_network:
+    name: moves_network
+    external: true

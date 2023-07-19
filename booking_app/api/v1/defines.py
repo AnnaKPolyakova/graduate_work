@@ -1,0 +1,10 @@
+ERROR_MESSAGE = "{api} error: {error}"
+START_LOG_MESSAGE = "{api} {method} start"
+END_LOG_MESSAGE = "{api} {method} finished"
+EXIST_LOG_MESSAGE = "{model} already exist"
+USER_IN_BLOCK_LIST = "user_in_block_list"
+BAD_REQUEST_MESSAGE = "{api} {method} bad_request"
+NOT_OWNER_MESSAGE = "only owner can change/delete the object"
+NOT_FOUND_MESSAGE = "Object {model} ({id}) not exist"
+
+DICT = "dict"

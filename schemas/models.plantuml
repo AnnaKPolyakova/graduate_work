@@ -1,0 +1,68 @@
+@startuml
+
+title Booking app
+
+left to right direction
+
+class City {
+  id: uuid
+  created_at: datatime
+  name: str
+  timezone: str
+}
+
+class Place {
+  id: uuid
+  created_at: datatime
+  name: str
+  city_id: uuid
+  address: str
+  host_id: uuid
+}
+
+class Event {
+  id: uuid
+  created_at: datatime
+  film_work_id: uuid
+  place_id: uuid
+  event_start: datatime
+  event_end: datatime
+  max_tickets_count: int
+  host_id: uuid
+}
+
+class Booking {
+  id: uuid
+  created_at: datatime
+  updated_at: datatime
+  event_id: uuid
+  user_id: uuid
+}
+
+class BlackList {
+  id: uuid
+  created_at: datatime
+  user_id: uuid
+  host_id: uuid
+}
+
+
+class User {
+  (из Auth app)
+}
+
+class FilmWork {
+  (из Async API app)
+}
+
+City::id --> Place::city_id
+Place::id --> Event::place_id
+FilmWork::id --> Event::film_work_id
+User::id --> Event::host_id
+User::id --> Booking::user_id
+Event::id --> Booking::event_id
+User::id --> Place::host_id
+User::id --> BlackList::host_id
+User::id --> BlackList::user_id
+
+@enduml
