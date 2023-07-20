@@ -50,7 +50,8 @@ class Place(BaseID, BaseCreate, ToDictMixin):
     address = db.Column(db.String(120), unique=True, nullable=True)
     host_id = db.Column(UUID(as_uuid=True), nullable=False)
     city = db.relationship(
-        "City", backref=db.backref("places"), overlaps="places"
+        "City", backref=db.backref("places"), overlaps="places",
+        single_parent=True, cascade="all, delete-orphan"
     )
 
     def __repr__(self):
@@ -69,7 +70,8 @@ class Event(BaseID, BaseCreate, ToDictMixin):
     max_tickets_count = db.Column(db.Integer, nullable=False)
     host_id = db.Column(UUID(as_uuid=True), nullable=False)
     place = db.relationship(
-        "Place", backref=db.backref("events"), overlaps="events"
+        "Place", backref=db.backref("events"), overlaps="events",
+        single_parent=True, cascade="all, delete-orphan"
     )
 
 
@@ -81,7 +83,8 @@ class Booking(BaseID, BaseCreate, ToDictMixin):
     )
     user_id = db.Column(UUID(as_uuid=True), nullable=False)
     event = db.relationship(
-        "Event", backref=db.backref("bookings"), overlaps="bookings"
+        "Event", backref=db.backref("bookings"), overlaps="bookings",
+        single_parent=True, cascade="all, delete-orphan"
     )
 
 
