@@ -50,6 +50,7 @@ class Settings(BaseSettings):
         env="NUMBER_OF_TRIES_TO_GET_RESPONSE", default=4
     )
     test: bool = False
+    debug: bool = Field(env="DEBUG", default=True)
 
     class Config:
         env_file = os.path.join(BASE_DIR, "../.env")

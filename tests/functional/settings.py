@@ -46,6 +46,7 @@ class TestSettings(BaseSettings):
     timezone: str = Field(env="TIMEZONE", default='Europe/Moscow')
     data_format: str = Field(env="DATA_FORMAT", default="%Y-%m-%d %H:%M")
     test: bool = True
+    debug: bool = False
 
     class Config:
         env_file = os.path.join(BASE_DIR, ".env", ".env_test")
