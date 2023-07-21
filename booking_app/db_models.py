@@ -44,14 +44,13 @@ class Place(BaseID, BaseCreate, ToDictMixin):
     name = db.Column(db.String(120), unique=True, nullable=False)
     city_id = db.Column(
         UUID(as_uuid=True),
-        db.ForeignKey("city.id"),
+        db.ForeignKey("city.id", ondelete='RESTRICT'),
         nullable=False,
     )
     address = db.Column(db.String(120), unique=True, nullable=True)
     host_id = db.Column(UUID(as_uuid=True), nullable=False)
     city = db.relationship(
         "City", backref=db.backref("places"), overlaps="places",
-        single_parent=True, cascade="all, delete-orphan"
     )
 
     def __repr__(self):
@@ -62,7 +61,7 @@ class Event(BaseID, BaseCreate, ToDictMixin):
     film_work_id = db.Column(UUID(as_uuid=True), nullable=False)
     place_id = db.Column(
         UUID(as_uuid=True),
-        db.ForeignKey("place.id"),
+        db.ForeignKey("place.id", ondelete='RESTRICT'),
         nullable=False,
     )
     event_start = db.Column(db.DateTime, nullable=False)
@@ -78,7 +77,7 @@ class Event(BaseID, BaseCreate, ToDictMixin):
 class Booking(BaseID, BaseCreate, ToDictMixin):
     event_id = db.Column(
         UUID(as_uuid=True),
-        db.ForeignKey("event.id"),
+        db.ForeignKey("event.id", ondelete='RESTRICT'),
         nullable=False,
     )
     user_id = db.Column(UUID(as_uuid=True), nullable=False)
