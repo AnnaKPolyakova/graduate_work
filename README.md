@@ -1,106 +1,104 @@
-#  Бронирование билетов
+#  Ticket booking
 
-Командная работа https://github.com/AnnaKPolyakova/graduate_work
+It will be great to connect movies with going to the cinema. Not everyone likes to stay at home and
+watch movies alone.
+Sometimes you want to watch them with a company of like-minded people.
+To implement this feature, a separate microservice was created using
+where you can create events and book tickets for them.
 
-Здорово будет связать фильмы с походами в кино. Не всем нравится сидеть дома и 
-смотреть фильмы в одиночку. 
-Иногда хочется их посмотреть с компанией единомышленников.
-Для реализации такой возможности создан отдельный микросервис с помощью 
-которого можно создавать события и бронировать на них билеты. 
+[Research on db selection](research.md)
 
-[Исследование по выбору bd](research.md)
+The following actions are available to users:
+- cities: creation (deletion, change) with time zone indication
+   (only available to superusers). View a list of cities (for all)
+- places: events: creation (change, deletion, viewing) with
+   indicating the address and city where they will be hosts. To view
+   list you can filter by city
+- events: creation (deletion, change) of an event indicating the collection location,
+   film, possible number of participants. Events can be filtered by
+   host, location, start date
+- hosts: view the list of event organizers (hosts), including your own
+   events (those whose events the request user attended) with the ability
+   filtering by city
+- blacklist: the host can add another user to the blacklist and
+   then he will not be able to create a booking for his event
+- ticket booking: registration for events (change of registration,
+   deletion). The user or the host can delete their reservation. Can
+   get all bookings (available filtering by user, event, host) or
+   only your bookings (available filtering by host)
 
-Пользователям доступны следующие действия:
-- города: создание (удаление, изменение) с указанием часового пояса 
-  (доступно только суперпользователям). Просмотр списка городов (для всех)
-- места: проведения событий: создание (изменение, удаление, просмотр) с 
-  указанием адреса и города, где они будут являться хостами. Для просмотра 
-  списка можно использовать фильтр по городу
-- события: создание (удаление, изменение) события с указанием места сбора, 
-  фильма, возможного количества участников. События можно фильтровать по 
-  хосту, месту, дате начала проведения
-- хосты: просмотр списка организаторов мероприятий (хостов), том числе своих 
-  мероприятий (тех не чьи мероприятия ходил request user) с возможностью 
-  фильтрации по городу
-- черный список: хост может добавить другого пользователя в черный список и 
-  тогда он не сможет создать бронирование на его событие
-- бронирование билетов: регистрация на мероприятия (изменение регистрации, 
-  удаление). Удалить свое бронирование может сам user или хост. Можно 
-  получить все бронирования (доступная фильтрация по user, event, host) или 
-  только свои бронирования (доступная фильтрация по host)
+Sorting the issuance of objects:
+Sorting is available by any fields of objects, or when requesting hosts -
+sort by id
 
-Сортировка выдачи объектов:
-Доступна сортировка по любым полям объектов, или при запросе хостов - 
-сортировка по id
+Restrictions:
+- you cannot create an event for a past time and date
+(taking into account time zones in different cities)
+- you cannot register for an event if all places are already taken or
+   it's already passed
+- you cannot delete a city or event if there are related objects
 
-Ограничения:
-- нельзя создать мероприятие на прошедшее время и дату 
-(с учетом часовых поясов в разных городах)
-- нельзя зарегистрироваться на мероприятие, если все места уже заняты или 
-  оно уже прошло
-- нельзя удалить город, мероприятие, если существуют связанные объекты
-
-Технологии и требования:
+Technologies and requirements:
 ```
 Python 3.9+
 flask
 ```
-### Настройки Docker
+### Docker settings
 
-##### Установка
+##### Installation
 
-* [Подробное руководство по установке](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
+* [Detailed Installation Guide](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
 
-### Настройки Docker-compose
+### Docker-compose settings
 
-##### Установка
+##### Installation
 
-* [Подробное руководство по установке](https://docs.docker.com/compose/install/)
+* [Detailed Installation Guide](https://docs.docker.com/compose/install/)
 
-### Запуск приложения
+### Running the application(
 
-#### Перед запуском проекта создаем переменные окружения
-Создаем в корне .env и добавляем в него необходимые переменные  
-Пример в .env.example - для запуска приложения целиком в docker  
-Пример в .env.example-local - для запуска приложения локально и частично в docker
+#### Before starting the project, create environment variables
+Create a .env in the root and add the necessary variables to it
+Example in .env.example - to run the entire application in docker
+Example in .env.example-local - to run the application locally and partially in docker
 
-#### Запуск полностью в контейнерах docker: 
+#### Run entirely in docker containers: 
 
 * `docker-compose up -d --build`
 
-Для остановки контейнера:  
+To stop the container:  
 * `docker-compose down --rmi all --volumes`
 
 
-#### Запуск проекта частично в контейнерах docker
+#### Running the project partially in docker containers
 
 * `docker-compose -f docker-compose-local.yml up -d --build`
 
-Для остановки контейнера:  
+To stop the container:  
 * `docker-compose -f docker-compose-local.yml down --rmi all --volumes`
 
 
-Документация по адресу:
+Documentation:
 
 http://127.0.0.1:8000/v1/doc/redoc/
 http://127.0.0.1:8000/v1/doc/swagger/
 
 
-### Тесты
+### Tests
 
-#### Запуск тестов частично в контейнерах docker
+#### Running tests partially in docker containers
 
 * `docker-compose -f docker-compose-local.yml up -d --build`
 * `pytest`
 
-Для остановки контейнера:  
+To stop the container:  
 * `docker-compose -f docker-compose-local.yml down --rmi all --volumes`
 
 
-#### Запуск тестов в контейнерах docker
+#### Running tests in docker containers
 
 * `docker-compose -f tests/functional/docker-compose-test.yml up -d --build`
 
-Для остановки контейнера:  
+To stop the container:  
 * `docker-compose -f tests/functional/docker-compose-test.yml down --rmi all --volumes`
 
