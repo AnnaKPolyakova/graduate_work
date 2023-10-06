@@ -1,20 +1,20 @@
-# Исследование
+# Research
 
-Для работы приложения потребуется база данных. Выбор сделан в пользу PostgreSQL.
+To run the application you will need a database. The choice was made in favor of PostgreSQL.
 
-Приемущества PostgreSQL:
+Benefits of PostgreSQL:
 
-1) Надежность и целостность данных:
-PostgreSQL обеспечивает высокую надежность и поддерживает транзакционность, 
-что делает его предпочтительным выбором для приложений, 
-где требуется сохранность данных, например. 
-2) Поддержка SQL и сложные запросы: PostgreSQL предлагает полную поддержку 
-языка SQL, включая расширенные функции, хранимые процедуры и возможности 
-оптимизации запросов.
-3) Расширяемость: PostgreSQL поддерживает пользовательские функции, хранимые 
-процедуры, индексы и другие расширения, позволяющие разработчикам создавать 
-более сложные и оптимизированные запросы.
+1) Reliability and data integrity:
+PostgreSQL provides high reliability and supports transactionality,
+making it the preferred choice for applications,
+where data security is required, for example.
+2) SQL support and complex queries: PostgreSQL offers full support
+SQL language, including advanced functions, stored procedures and capabilities
+query optimization.
+3) Extensibility: PostgreSQL supports user-defined stored functions
+procedures, indexes, and other extensions that allow developers to create
+more complex and optimized queries.
 
-MongoDB в данном случае является гараздо менее подходящей СУБД, так как нам не 
-требуется хранить различные типы данных внутри одной коллекции без строгой 
-схемы, не поддерживает SQL запросы и не гараднитует целостность данных.
+MongoDB in this case is a much less suitable DBMS, since we do not
+required to store different types of data within one collection without strict
+schemas, does not support SQL queries and does not guarantee data integrity.
